@@ -1,6 +1,7 @@
 node_modules/
 .expo/
 dist/
+util/
 npm-debug.*
 *.jks
 *.p8
@@ -8,7 +9,6 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
-/util/location.js
 web-build/
 
 # macOS
