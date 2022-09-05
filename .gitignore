@@ -8,7 +8,7 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
-util/
+/util/location.js
 web-build/
 
 # macOS
