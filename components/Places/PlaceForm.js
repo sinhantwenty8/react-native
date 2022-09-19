@@ -1,12 +1,29 @@
 import { View , Text, ScrollView, TextInput, StyleSheet} from "react-native";
-import {useState} from 'react'
+import {useState,useCallback} from 'react'
 import { Colors } from "../../constants/colors";
 import ImagePicker from "./ImagePicker";
 import LocationPicker from "./LocationPicker";
+import StyledButton from "../UI/StyledButton"
+import { getAddress } from "../../util/location";
+import { Place } from "../../models/place";
 
-
-function PlaceForm(){
+function PlaceForm({onCreatePlace}){
     const [enteredTitle, setEnteredTitle] = useState('');
+    const [pickedLocation,setPickedLocation] = useState();
+    const [selectedImage,setSelectedImage] = useState()
+
+    const pickedLocationHandler = useCallback((location)=>{
+        setPickedLocation(location)
+    },[])
+
+    function takeImageHandler(imageUrl){
+        setSelectedImage(imageUrl)
+    }
+
+    function savePlaceHandler(){
+        const placeData = new Place(enteredTitle,selectedImage,pickedLocation)
+        onCreatePlace(placeData)
+    }
 
     function changeTitleHandler(enteredText){
         setEnteredTitle(enteredText)
@@ -22,8 +39,11 @@ function PlaceForm(){
             onChangeText={changeTitleHandler} 
             value={enteredTitle}/>
         </View>
-        <ImagePicker></ImagePicker>
-        <LocationPicker></LocationPicker>
+        <ImagePicker style={styles.imageContainer} onTakeImage={takeImageHandler}></ImagePicker>
+        <LocationPicker style={styles.locationContainer} onPickLocation={pickedLocationHandler}></LocationPicker>
+        <View style={styles.button}>
+            <StyledButton onPress={savePlaceHandler}>Add your place</StyledButton>
+        </View>
     </ScrollView>
   
 }
@@ -35,39 +55,53 @@ const styles = StyleSheet.create({
         flex:1,
         padding:"6%",
         marginTop:10,
-        marginLeft:10,
+        marginLeft:15,
         marginRight:15,
     },
     label:{
         fontWeight:"bold",
-        marginBottom:4,
-        color:Colors.pink500,
-        fontSize:17,
+        marginVertical:2,
+        color:Colors.white,
+        fontSize:16,
     },
     labelContainer:{
         padding:2,
-        backgroundColor:Colors.white,
-        borderRadius:10,
-        borderColor:Colors.pink500,
-        borderWidth:2,
+        backgroundColor:Colors.deep_taupe,
+        borderRadius:5,
+        borderColor:Colors.deep_taupe,
+        borderWidth:0.5,
         width:65,
-        overflow:"hidden",
         textAlign:"center",
         justifyContent:"center",
         alignItems:"center",
+        shadowColor:Colors.black,
+        shadowRadius:2,
+        shadowOffset:{width:1,height:1},
+        shadowOpacity:0.25,
+        elevation:4,
     },
     input:{
-        marginVertical:8,
-        marginHorizontal:4,
-        paddingVertical:15,
+        marginVertical:15,
         fontSize:16,
-        borderBottomColor:Colors.pink500,
+        fontWeight:"bold",
+        borderBottomColor:Colors.deep_taupe,
         borderBottomWidth:2,
         width:"100%",
-        height:"20%",
-        color:Colors.pink500,
+        height:"30%",
+        color:Colors.deep_taupe
+    },
+    imageContainer:{
+        flex:2,
+        justifyContent:"center",
+        alignItems:'center',
+    },
+    locationContainer:{
+        flex:2,
     },
     formContainer:{
-        marginBottom:"-20%"
-    }
+        flex:1
+    },
+    button:{
+        flex:1,
+    },
 })

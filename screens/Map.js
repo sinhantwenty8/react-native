@@ -17,11 +17,9 @@ function Map({navigation}){
         const lng = event.nativeEvent.coordinate.longitude
 
         setSelectedLocation({lat:lat,lng:lng})
-        console.log(lat,lng,selectedLocation)
     }
 
     const savedPickedLocation =useCallback(()=> {
-        console.log(selectedLocation)
         if(!selectedLocation){
             Alert.alert('No location picked!','You have to pick a location (by tapping on the map) first!')
             return

@@ -21,18 +21,18 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:"center",
         borderWidth:1.5,
-        borderColor:Colors.pink500
+        borderColor:Colors.deep_taupe
     },
     pressed:{
         opacity:0.7,
     },
     text:{
         marginRight:6,
-        color:Colors.pink500,
+        color:Colors.deep_taupe,
         fontWeight:"bold",
     },
     icon:{
-        color:Colors.pink500,
+        color:Colors.deep_taupe,
         marginRight:5,
     },
 })

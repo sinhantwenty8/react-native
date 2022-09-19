@@ -1,12 +1,20 @@
 import { launchCameraAsync,PermissionStatus,useCameraPermissions } from "expo-image-picker"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native"
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 
-function ImagePicker(){
+function ImagePicker({onTakeImage,oriImage}){
     const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
     const [imagePicked, setImagePicked] = useState()
+
+    useEffect(()=>{
+        console.log(oriImage,"haha")
+        if(oriImage){
+            setImagePicked(oriImage)
+            onTakeImage(oriImage)
+        }
+    },[imagePicked,setImagePicked])
 
     async function verifyPermissions(){
         if(cameraPermissionInformation.status === PermissionStatus.UNDETERMINED){
@@ -34,6 +42,7 @@ function ImagePicker(){
             quality:0.5
         })
         setImagePicked(image.uri)
+        onTakeImage(image.uri)
     }
 
     let imagePreview = <Text style={styles.imagePreviewText}>No Image Taken Yet</Text>
@@ -43,7 +52,7 @@ function ImagePicker(){
         imagePreview = <Image style={styles.image} source={{uri:imagePicked}}></Image>
     }
 
-    return<View>
+    return<View style={styles.container}>
         <View style={styles.imagecontainer}>
             {imagePreview}
         </View>
@@ -54,30 +63,39 @@ function ImagePicker(){
 export default ImagePicker
 
 const styles = StyleSheet.create({
+    container:{
+        marginBottom:"3%"
+    },
     imagecontainer:{
         width:"100%",
-        height:200,
+        height:180,
         justifyContent:'center',
         alignItems:'center',
-        backgroundColor:Colors.pink500,
+        backgroundColor:Colors.cinereuos,
         borderRadius:"5px",
-        overflow:'hidden'
+        overflow:'hidden',
+        alignSelf:'center',
     },
     imagePreviewText:{
         color:Colors.white,
         textAlign:"center",
-        fontSize:16,
+        fontSize:15,
         fontWeight:"300",
         marginTop:"40%",
         marginBottom:"40%",
         padding:"6%",
         paddingBottom:"12%",
         borderRadius:2,
+        shadowColor:Colors.black,
+        shadowRadius:1,
+        shadowOffset:{width:1,height:1},
+        shadowOpacity:0.25,
+        elevation:2
     },
 
     image:{
         width:"100%",
         height:"100%",
-        borderRadius:4
+        borderRadius:4,
     }
 })
